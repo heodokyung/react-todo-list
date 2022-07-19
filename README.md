@@ -1,46 +1,20 @@
-# Getting Started with Create React App
+# React Todo App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 사이트 설명
 
-## Available Scripts
+React와 Typescript를 적용하여 만든 Coin 암호화폐 정보 사이트 입니다
 
-In the project directory, you can run:
+## 사이트 바로가기
 
-### `npm start`
+<a href="https://heodokyung.github.io/react-todo-list/" target="_blank">[토이프로젝트] Todo App (할 일 관리)</a>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 적용기술
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1.React
+2.TypeScript: 보다 정적인 코드(에러 방지)를 위해 Typescript를 적용하였습니다.
+3.react-hook-form을 사용하여 Form 입력 필드를 관리하였습니다.
+4.styled-components: 사이트의 스타일은 CSS-IN-JS로 적용하였습니다. (다크모드 적용)
+5.recoil: 다크모드 값의 상태관리를 위해 Recoil을 사용하였습니다.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 5-1 : Recoil의 selector기능을 사용하여 각 상태(할일, 진행중, 완료)된 목록 리스트를 반환합니다.
+- 5-2 : Recoil로 localStroge에 Todo 목록을 저장하였습니다.
