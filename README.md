@@ -17,4 +17,9 @@ React와 Typescript를 적용하여 만든 Coin 암호화폐 정보 사이트 �
 5.recoil: 다크모드 값의 상태관리를 위해 Recoil을 사용하였습니다.  
 
 - 5-1 : Recoil의 selector기능을 사용하여 각 상태(할일, 진행중, 완료)된 목록 리스트를 반환합니다.  
-- 5-2 : Recoil로 localStroge에 Todo 목록을 저장하였습니다.  
+- 5-2 : Recoil로 localStroge에 Todo 목록을 저장하였습니다. 
+6. Web, Mobile 모두 화면을 볼 수 있도록 미디어 쿼리를 이용하여 반응형으로 구현하였습니다.
+
+![1](https://user-images.githubusercontent.com/50813871/179692925-73713de5-43a9-46c5-99d8-3a88559da3a0.gif)
+![2](https://user-images.githubusercontent.com/50813871/179692936-4f4c9439-b5d3-46a4-9acd-f5aeb7ae6b5d.gif)
+![3](https://user-images.githubusercontent.com/50813871/179692940-5b1ad76c-d096-4176-9fb3-e760aa378f4f.gif)
