@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
 import { useForm } from 'react-hook-form';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { categoryState, todoState } from '../atoms';
+import { categoryState, CategoryType, todoState } from '../atoms';
 
 interface IForm {
 	todo: string;
@@ -23,17 +23,30 @@ const CreateTodo = () => {
 	const { register, handleSubmit, setValue } = useForm<IForm>();
 	const setTodoList = useSetRecoilState(todoState);
 
-	// 값만 가져와 사용하 때는 useRecoilValue로 처리
+	// 값만 가져와 사용하 때는 useRecoilValue로 처리 : select로 사용할 때는 해당 카테고리에 바로 값 입력
 	const category = useRecoilValue(categoryState);
 
 	const hendelValid = ({ todo }: IForm) => {
 		// setTodoList((oldTodo) => [{ text: todo, category: 'TO_DO' }, ...oldTodo]);
 		// category는 축약형으로 category: category => category로 작성 가능
 
+		if (todo.trim().length <= 0) {
+			setValue('todo', '');
+			alert('내용을 입력해 주세요!!!!!');
+			return;
+		}
+
 		setTodoList((oldTodo) => [
-			{ text: todo, id: Date.now(), category, time: makeTime() },
+			{
+				text: todo,
+				id: Date.now(),
+				category: CategoryType.TO_DO,
+				time: makeTime(),
+			},
 			...oldTodo,
 		]);
+
+		// React Hooks Form에서 제공하는 함수
 		setValue('todo', '');
 	};
 

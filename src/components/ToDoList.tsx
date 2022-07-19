@@ -39,8 +39,33 @@ function ToDoList() {
 */
 
 const Wrapper = styled.article`
-	max-width: 600px;
-	margin: 0 auto;
+	max-width: 1600px;
+	margin: 40px auto;
+	box-sizing: border-box;
+	padding: 0 16px;
+`;
+
+const TodoListWrap = styled.section`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0 20px;
+	margin-top: 20px;
+	@media screen and (max-width: 1200px) {
+		display: block;
+	}
+`;
+
+const TodoWrap = styled.article`
+	max-height: 500px;
+	padding: 20px 0;
+	overflow-y: auto;
+	@media screen and (max-width: 1200px) {
+		display: block;
+		width: 100%;
+		& + & {
+			margin-top: 30px;
+		}
+	}
 `;
 
 const FlexBox = styled.article`
@@ -59,20 +84,28 @@ const Header = styled.h1`
 	margin-bottom: 20px;
 `;
 
+const Title = styled.h2`
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 15px;
+`;
+
 export const colors = {
 	default: '#222',
 	white: '#fff',
 };
 
 function ToDoList() {
+	// Select로 카테고리 관리시
 	// const todos = useRecoilValue(todoSelector);
-	const todos = useRecoilValue(todoSelector);
-	const [category, setCategory] = useRecoilState(categoryState);
 
-	const onSelect = (event: React.FormEvent<HTMLSelectElement>) => {
-		// 카테고리는 3가지 타입인데 넘겨받는 값은 String이기 때문에 as any로 타입스크립트 검사를
-		setCategory(event.currentTarget.value as any);
-	};
+	// 전체 카데고리를 한번에 보여주고 싶음
+	const [todos, doing, done] = useRecoilValue(todoSelector);
+
+	// const [category, setCategory] = useRecoilState(categoryState);
+	// const onSelect = (event: React.FormEvent<HTMLSelectElement>) => {
+	// 	setCategory(event.currentTarget.value as any);
+	// };
 
 	return (
 		<Wrapper>
@@ -86,24 +119,54 @@ function ToDoList() {
 			</Header>
 
 			<FlexBox>
-				<SelectBox onChange={onSelect} value={category}>
+				{/*
+        <SelectBox onChange={onSelect} value={category}>
 					<option value={CategoryType.TO_DO}>할일</option>
 					<option value={CategoryType.DOING}>진행중</option>
 					<option value={CategoryType.DONE}>완료</option>
 				</SelectBox>
-
+        */}
 				<CreateTodo />
 			</FlexBox>
 
-			<ul>
-				{todos.map((item) => (
-					// 아래의 코드와 동일, 전개연산자를 사용하지 않으면 해당 항목을 하나씩 나열해서 전달해야 함.
-					// <TodoElement key={item.id} text={item.text} category={item.category} id={item.id} time={item.time}  />
+			<TodoListWrap>
+				{todos.length > 0 ? (
+					<TodoWrap>
+						<Title>할일: {todos.length}</Title>
+						<ul>
+							{todos.map((item) => (
+								// 아래의 코드와 동일, 전개연산자를 사용하지 않으면 해당 항목을 하나씩 나열해서 전달해야 함.
+								// <TodoElement key={item.id} text={item.text} category={item.category} id={item.id} time={item.time}  />
 
-					// 전개연산자로 props 전달, Props이 같고 사용하는 이름이 같기때문에 전개연산자로 Props가 가능합니다.
-					<TodoElement key={item.id} {...item} />
-				))}
-			</ul>
+								// 전개연산자로 props 전달, Props이 같고 사용하는 이름이 같기때문에 전개연산자로 Props가 가능합니다.
+								<TodoElement key={item.id} {...item} />
+							))}
+						</ul>
+					</TodoWrap>
+				) : null}
+
+				{doing.length > 0 ? (
+					<TodoWrap>
+						<Title>진행중: {doing.length}</Title>
+						<ul>
+							{doing.map((item) => (
+								<TodoElement key={item.id} {...item} />
+							))}
+						</ul>
+					</TodoWrap>
+				) : null}
+
+				{done.length > 0 ? (
+					<TodoWrap>
+						<Title>완료: {done.length}</Title>
+						<ul>
+							{done.map((item) => (
+								<TodoElement key={item.id} {...item} />
+							))}
+						</ul>
+					</TodoWrap>
+				) : null}
+			</TodoListWrap>
 		</Wrapper>
 	);
 }

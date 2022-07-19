@@ -37,13 +37,11 @@ export enum CategoryType {
 export interface ITodo {
 	text: string;
 	id: number;
-	category: CategoryType.TO_DO | CategoryType.DOING | CategoryType.DONE;
+	category: CategoryType;
 	time: string;
 }
 
-export const categoryState = atom<
-	CategoryType.TO_DO | CategoryType.DOING | CategoryType.DONE
->({
+export const categoryState = atom<CategoryType>({
 	key: 'selectState',
 	default: CategoryType.TO_DO,
 });
@@ -107,9 +105,14 @@ export const todoSelector = selector({
 	key: 'todoSelector',
 	get: ({ get }) => {
 		const todos = get(todoState);
-		const category = get(categoryState);
-		// 카테고리를 가져와서 필터로 해당 값만 반환
-		return todos.filter((itme) => itme.category === category);
+		// 카테고리를 가져와서 필터로 해당 값만 반환 (Select로 상태 구분시)
+		// const category = get(categoryState);
+		// return todos.filter((itme) => itme.category === category);
+		return [
+			todos.filter((itme) => itme.category === CategoryType.TO_DO),
+			todos.filter((itme) => itme.category === CategoryType.DOING),
+			todos.filter((itme) => itme.category === CategoryType.DONE),
+		];
 	},
 });
 

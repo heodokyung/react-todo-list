@@ -18,6 +18,22 @@ const TodoItem = styled.li`
 	}
 `;
 
+const TextWrap = styled.div`
+	width: calc(100% - 190px);
+	@media screen and (max-width: 640px) {
+		width: calc(100% - 80px);
+	}
+`;
+
+const ButtonWrap = styled.div`
+	width: 175px;
+	text-align: right;
+	@media screen and (max-width: 640px) {
+		width: 72px;
+		margin-left: 8px;
+	}
+`;
+
 const TodoButton = styled.button`
 	padding: 5px 10px;
 	border-radius: 4px;
@@ -25,6 +41,12 @@ const TodoButton = styled.button`
 	font-size: 14px;
 	& + & {
 		margin-left: 5px;
+	}
+	@media screen and (max-width: 640px) {
+		width: 100%;
+		& + & {
+			margin: 5px 0 0 0;
+		}
 	}
 `;
 const TextContent = styled.p<{ fontSize: string }>`
@@ -128,20 +150,11 @@ const TodoElement = ({ text, category, id, time }: ITodo) => {
 
 	return (
 		<TodoItem>
-			<div
-				className={css`
-					width: calc(100% - 190px);
-				`}
-			>
+			<TextWrap>
 				<TextContent fontSize={'14px'}>{time}</TextContent>
 				<TextContent fontSize={'18px'}>{text}</TextContent>
-			</div>
-			<div
-				className={css`
-					width: 175px;
-					text-align: right;
-				`}
-			>
+			</TextWrap>
+			<ButtonWrap>
 				{/*
 				1) && 연산자를 이용하여  조건이 충족되면 '&&' 뒤에 오는 부분을 수행 =>
 				2) 해당 조건이 아닐때만 버튼이 노출됨 =>
@@ -176,7 +189,7 @@ const TodoElement = ({ text, category, id, time }: ITodo) => {
 				<TodoButton onClick={deleteTodo} type='button'>
 					삭제
 				</TodoButton>
-			</div>
+			</ButtonWrap>
 		</TodoItem>
 	);
 };
