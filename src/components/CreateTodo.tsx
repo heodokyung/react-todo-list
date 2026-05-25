@@ -1,91 +1,123 @@
 import { css } from '@emotion/css';
 import { useForm } from 'react-hook-form';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { categoryState, CategoryType, todoState } from '../atoms';
+import { useSetRecoilState } from 'recoil';
+import { CategoryType, todoState } from '../atoms';
 
 interface IForm {
-	todo: string;
+  todo: string;
 }
 
-const CreateTodo = () => {
-	const makeTime = () => {
-		const today = new Date();
-		const year = today.getFullYear(); // 년도
-		const month = today.getMonth() + 1; // 월
-		const date = today.getDate(); // 날짜
-		const hours = today.getHours(); // 시간
-		const minutes = today.getMinutes(); // 분
-		const seconds = today.getSeconds(); // 초
-		const fullData = `${year}.${month}.${date} / ${hours}:${minutes}:${seconds}`;
-		return fullData;
-	};
+interface CreateTodoProps {
+  category: CategoryType;
+  label: string;
+}
 
-	const { register, handleSubmit, setValue } = useForm<IForm>();
-	const setTodoList = useSetRecoilState(todoState);
+const getCreatedTime = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
 
-	// 값만 가져와 사용하 때는 useRecoilValue로 처리 : select로 사용할 때는 해당 카테고리에 바로 값 입력
-	const category = useRecoilValue(categoryState);
+  return `${year}.${month}.${day} / ${hours}:${minutes}`;
+};
 
-	const hendelValid = ({ todo }: IForm) => {
-		// setTodoList((oldTodo) => [{ text: todo, category: 'TO_DO' }, ...oldTodo]);
-		// category는 축약형으로 category: category => category로 작성 가능
+const CreateTodo = ({ category, label }: CreateTodoProps) => {
+  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const setTodoList = useSetRecoilState(todoState);
 
-		if (todo.trim().length <= 0) {
-			setValue('todo', '');
-			alert('내용을 입력해 주세요!!!!!');
-			return;
-		}
+  const handleValid = ({ todo }: IForm) => {
+    const nextTodo = todo.trim();
 
-		setTodoList((oldTodo) => [
-			{
-				text: todo,
-				id: Date.now(),
-				category: CategoryType.TO_DO,
-				time: makeTime(),
-			},
-			...oldTodo,
-		]);
+    if (!nextTodo) {
+      setValue('todo', '');
+      return;
+    }
 
-		// React Hooks Form에서 제공하는 함수
-		setValue('todo', '');
-	};
+    setTodoList((oldTodo) => [
+      {
+        text: nextTodo,
+        id: Date.now(),
+        category,
+        time: getCreatedTime(),
+      },
+      ...oldTodo,
+    ]);
 
-	return (
-		<form
-			onSubmit={handleSubmit(hendelValid)}
-			className={css`
-				height: 40px;
-				width: 100%;
-			`}
-		>
-			<input
-				{...register('todo', {
-					required: '할일 목록을 적어주세요!!',
-				})}
-				type='text'
-				placeholder='할일 목록을 적어주세요!!'
-				className={css`
-					padding: 5px 10px;
-					box-sizing: border-box;
-					height: 100%;
-					width: calc(100% - 75px);
-				`}
-			/>
-			<button
-				type='submit'
-				className={css`
-					padding: 4px;
-					width: 70px;
-					box-sizing: border-box;
-					height: 100%;
-					margin-left: 4px;
-					vertical-align: top;
-				`}
-			>
-				추가
-			</button>
-		</form>
-	);
+    setValue('todo', '');
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(handleValid)}
+      className={css`
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        margin-top: 16px;
+      `}
+    >
+      <label
+        htmlFor={`todo-input-${category}`}
+        className={css`
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+        `}
+      >
+        {label} 항목 추가
+      </label>
+      <input
+        id={`todo-input-${category}`}
+        {...register('todo')}
+        type="text"
+        placeholder={`${label}에 추가할 작업`}
+        className={css`
+          min-width: 0;
+          flex: 1;
+          height: 42px;
+          padding: 0 12px;
+          border: 1px solid #d6dbe1;
+          border-radius: 10px;
+          background: #ffffff;
+          color: #1f2933;
+          font-size: 14px;
+          outline: none;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+          &:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+          }
+        `}
+      />
+      <button
+        type="submit"
+        className={css`
+          width: 58px;
+          height: 42px;
+          border: 0;
+          border-radius: 10px;
+          background: #1f2937;
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.2s ease;
+
+          &:hover {
+            background: #111827;
+          }
+        `}
+      >
+        추가
+      </button>
+    </form>
+  );
 };
 
 export default CreateTodo;
