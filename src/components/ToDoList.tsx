@@ -63,8 +63,7 @@ const HeaderTitle = styled.h1`
   letter-spacing: -0.04em;
 `;
 
-const HeaderDescription = styled.p`
-  max-width: 680px;
+const HeaderDescription = styled.p`  
   margin: 14px 0 0;
   color: #5f6b7a;
   font-size: 16px;
